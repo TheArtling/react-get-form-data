@@ -1,0 +1,32 @@
+{
+  "name": "react-native-get-form-data",
+  "version": "0.0.1",
+  "description": "A form component library for react-native",
+  "main": "Form.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheArtling/react-native-get-form-data.git"
+  },
+  "keywords": [
+    "react-native",
+    "form",
+    "react"
+  ],
+  "author": [
+    "Nicholas Ng <nzy.nicholas@gmail.com>",
+    "Martin Brochhaus <mbrochh@gmail.com>"
+  ],
+  "peerDependencies": {
+    "react-native": ">=0.29",
+    "react": "^0.14.0 || ^15.0.0-0",
+    "lodash": "^4.2.0"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TheArtling/react-native-get-form-data/issues"
+  },
+  "homepage": "https://github.com/TheArtling/react-native-get-form-data#readme"
+}
