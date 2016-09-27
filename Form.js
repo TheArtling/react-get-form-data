@@ -12,8 +12,14 @@ export default class Form extends React.Component {
   }
 
   handleFieldChange(key, name, value){
-    merge(this.values, {[name]: {[key]: value} })
-    this.props.onChange && this.props.onChange(this.values);
+    let keyValue = {}
+    if (key) {
+      keyValue = {[name]: {[key]: value} }
+    } else {
+      keyValue = {[name]: value}
+    }
+    merge(this.values, keyValue)
+    this.props.onChange && this.props.onChange(this.values)
   }
 
   getValues(){
@@ -31,11 +37,15 @@ export default class Form extends React.Component {
     let result = {}
     let valuesKeys = keys(this.values)
     valuesKeys.forEach((item) => {
-      let arrayValues = values(this.values[item])
-      if (arrayValues.length === 1) {
-        result[item] = arrayValues[0]
+      if (typeof this.values[item] === "string") {
+        result[item] = this.values[item]
       } else {
-        result[item] = arrayValues.filter((value) => value !== "")
+        let arrayValues = values(this.values[item])
+        if (arrayValues.length === 1) {
+          result[item] = arrayValues[0]
+        } else {
+          result[item] = arrayValues.filter((value) => value !== "")
+        }
       }
     })
     return result
@@ -45,7 +55,7 @@ export default class Form extends React.Component {
     // Takes the values from this.getValues() and appends them to a new
     // FormData object which you can use to make POST requests.
     let formValues = this.getValues()
-    valuesKeys = keys(formValues)
+    let valuesKeys = keys(formValues)
     let formData = new FormData()
     valuesKeys.forEach((item) => {
       if (formValues[item] instanceof Array) {
@@ -60,18 +70,20 @@ export default class Form extends React.Component {
   }
 
   render() {
-    let wrappedChildren = []
-    React.Children.map(this.props.children, (child, i)=> {
-      if (!child) {
-        return
+    const wrappedChildren = React.Children.map(
+      this.props.children,
+      (child, i)=> {
+        if (!child) {
+          return child
+        }
+        return React.cloneElement(child, {
+          key: child.key || child.ref,
+          onChange: (name, value) => this.handleFieldChange(
+            child.key, name, value),
+        }
+       )
       }
-      wrappedChildren.push(React.cloneElement(child, {
-        key: child.ref || child.type+i,
-        onChange: (value) => this.handleFieldChange(
-          child.key, child.props.name, value),
-      }
-      ))
-    }, this)
+    )
 
     return (
       <View>
