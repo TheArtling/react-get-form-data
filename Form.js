@@ -4,14 +4,26 @@ import keys from "lodash/keys"
 import values from "lodash/values"
 import merge from "lodash/merge"
 
-
 export default class Form extends React.Component {
+
+  static childContextTypes = {
+    formContext: React.PropTypes.object,
+  }
+
+  getChildContext() {
+    return {
+      formContext: {
+        handleChange: (key, name, value) => this.handleFieldChange(key, name, value)
+      }
+    }
+  }
+
   constructor(props){
     super(props)
     this.values = {}
   }
 
-  handleFieldChange(key, name, value){
+  handleFieldChange(key="", name, value){
     let keyValue = {}
     if (key) {
       keyValue = {[name]: {[key]: value} }
@@ -70,24 +82,9 @@ export default class Form extends React.Component {
   }
 
   render() {
-    const wrappedChildren = React.Children.map(
-      this.props.children,
-      (child, i)=> {
-        if (!child) {
-          return child
-        }
-        return React.cloneElement(child, {
-          key: child.key || child.ref,
-          onChange: (name, value) => this.handleFieldChange(
-            child.key, name, value),
-        }
-       )
-      }
-    )
-
     return (
       <View>
-        {wrappedChildren}
+        {this.props.children}
       </View>
     )
   }
