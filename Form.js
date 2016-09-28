@@ -49,15 +49,16 @@ export default class Form extends React.Component {
     let result = {}
     let valuesKeys = keys(this.values)
     valuesKeys.forEach((item) => {
-      if (typeof this.values[item] === "string") {
-        result[item] = this.values[item]
-      } else {
+      if (this.values[item] instanceof Array &&
+          typeof this.values[item] !== "string") {
         let arrayValues = values(this.values[item])
         if (arrayValues.length === 1) {
           result[item] = arrayValues[0]
         } else {
           result[item] = arrayValues.filter((value) => value !== "")
         }
+      } else {
+        result[item] = this.values[item]
       }
     })
     return result
