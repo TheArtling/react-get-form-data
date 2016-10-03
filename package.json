@@ -1,5 +1,5 @@
 {
-  "name": "react-native-get-form-data",
+  "name": "react-get-form-data",
   "version": "0.0.1",
   "description": "A form component library for react-native",
   "main": "index.js",
