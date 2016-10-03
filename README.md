@@ -1,3 +1,3 @@
-# react-native-get-form-data #
+# react-get-form-data #
 
-A react native form component
+A react form component
