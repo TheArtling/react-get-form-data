@@ -11,7 +11,8 @@ export default class Form extends React.Component {
   getChildContext() {
     return {
       formContext: {
-        handleChange: (key, name, value) => this.handleFieldChange(key, name, value)
+        handleChange: (key, name, value, propagate) =>
+          this.handleFieldChange(key, name, value, propagate)
       }
     }
   }
@@ -21,9 +22,9 @@ export default class Form extends React.Component {
     this.values = {}
   }
 
-  handleFieldChange(key="", name, value){
+  handleFieldChange(key="", name, value, propagate){
     this.values = formCore.handleFieldChange(this.values, key, name, value)
-    this.props.onChange && this.props.onChange(this.values)
+    if (propagate) { this.props.onChange && this.props.onChange(this.values) }
   }
 
   getValues(){

@@ -3,13 +3,21 @@ import keys from "lodash/keys"
 import values from "lodash/values"
 
 export function handleFieldChange(original, key="", name, value) {
-  let keyValue = {}
+  let newValue
   if (key) {
-    keyValue = {[name]: {[key]: value} }
+    newValue = {[key]: value}
   } else {
-    keyValue = {[name]: value}
+    newValue = value
   }
-  return merge({}, original, keyValue)
+  let result = merge({}, original, {}) // just creating a copy here
+  result[name] = newValue
+  if (value instanceof Array === true && value.length === 0) {
+    // This can happen when you have a multi-select input and the user
+    // de-selects all values. In this case it is best to remove the field
+    // from the form data completely.
+    delete(result[name])
+  }
+  return result
 }
 
 export function getValuesObject(formValues) {
